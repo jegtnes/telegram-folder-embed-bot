@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/jegtnes/telegram-folder-embed-bot/issues"
   },
-  "homepage": "https://github.com/jegtnes/telegram-folder-embed-bot#readme"
+  "homepage": "https://github.com/jegtnes/telegram-folder-embed-bot#readme",
+  "dependencies": {
+    "telegraf": "^4.16.3"
+  }
 }
