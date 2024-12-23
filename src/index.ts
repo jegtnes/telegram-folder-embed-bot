@@ -6,11 +6,25 @@ config();
 
 const botKey: string = process.env.BOT_TOKEN || "";
 
-const bot = new Telegraf(botKey)
-bot.start((ctx: any) => ctx.reply('Welcome'))
-bot.help((ctx: any) => ctx.reply('Send me a sticker'))
-bot.on(message('sticker'), (ctx: any) => ctx.reply('👍'))
-bot.hears('hi', (ctx: any) => ctx.reply('Hey there'))
+console.info('Started bot process');
+
+const bot = new Telegraf(botKey);
+
+bot.start((ctx: any) => ctx.reply('Welcome'));
+bot.help((ctx: any) => {
+    ctx.reply('Send me a sticker')
+});
+
+bot.on(message('sticker'), (ctx: any) => {
+    console.info('Received sticker');
+    ctx.reply('👍')
+});
+
+bot.hears('hi', (ctx: any) => {
+    console.info('Received "hi"');
+    ctx.reply('Hey there')
+})
+
 bot.launch()
 
 // Enable graceful stop
