@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "bun run src/index.ts"
+    "start": "bun run src/index.ts",
+    "watch": "bun --watch run src/index.ts"
   },
   "repository": {
     "type": "git",
