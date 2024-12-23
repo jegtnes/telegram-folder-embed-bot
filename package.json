@@ -4,7 +4,8 @@
   "description": "A Telegram bot to embed images from an Apache/Nginx folder listing",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "bun run src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -12,8 +13,7 @@
   },
   "keywords": [
     "telegram",
-    "telegram",
-    "bot",
+    "telegram-bot",
     "bot",
     "chatbot"
   ],
@@ -24,6 +24,17 @@
   },
   "homepage": "https://github.com/jegtnes/telegram-folder-embed-bot#readme",
   "dependencies": {
+    "bun": "^1.1.42",
+    "dotenv": "^16.4.7",
     "telegraf": "^4.16.3"
+  },
+  "devDependencies": {
+    "@telegraf/types": "^7.1.0",
+    "@types/bun": "latest",
+    "@types/node": "^22.10.2"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }
