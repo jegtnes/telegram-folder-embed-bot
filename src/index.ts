@@ -5,6 +5,8 @@ import { config } from 'dotenv';
 config();
 
 const botKey: string = process.env.BOT_TOKEN || "";
+const domain: string = process.env.DOMAIN || "";
+const port: number = parseInt(process.env.PORT || '0', 10);
 
 console.info('Started bot process');
 
@@ -25,7 +27,13 @@ bot.hears('hi', (ctx: any) => {
     ctx.reply('Hey there')
 })
 
-bot.launch()
+// Start webhook via launch method (preferred)
+bot.launch({
+    webhook: {
+        domain: domain,
+        port: port,
+    },
+});  
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'))
