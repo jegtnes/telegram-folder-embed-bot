@@ -1,4 +1,4 @@
-import { Telegraf } from 'telegraf';
+import { Context, Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
 import { config } from 'dotenv';
 
@@ -12,17 +12,17 @@ console.info('Started bot process');
 
 const bot = new Telegraf(botKey);
 
-bot.start((ctx: any) => ctx.reply('Welcome'));
-bot.help((ctx: any) => {
+bot.start((ctx: Context) => ctx.reply('Welcome'));
+bot.help((ctx: Context) => {
     ctx.reply('Send me a sticker')
 });
 
-bot.on(message('sticker'), (ctx: any) => {
+bot.on(message('sticker'), (ctx: Context) => {
     console.info('Received sticker');
     ctx.reply('👍')
 });
 
-bot.hears('hi', (ctx: any) => {
+bot.hears('hi', (ctx: Context) => {
     console.info('Received "hi"');
     ctx.reply('Hey there')
 })
