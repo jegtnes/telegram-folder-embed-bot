@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/jegtnes/telegram-folder-embed-bot#readme",
   "dependencies": {
+    "axios": "^1.7.9",
     "bun": "^1.1.42",
+    "cheerio": "^1.0.0",
     "dotenv": "^16.4.7",
     "telegraf": "^4.16.3"
   },
