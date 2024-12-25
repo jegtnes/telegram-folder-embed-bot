@@ -52,19 +52,23 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 			const ext = extRx?.[1];
 			console.log("Extension", ext);
 			if (ext === "jpg") {
+				const title = new URL(link).pathname.slice(1);
 				return {
 					type: "photo",
 					id: uuidV5(link, uuidV5.URL),
 					photo_url: link,
 					thumbnail_url: link,
+					title,
 				} as InlineQueryResultPhoto;
 			}
 			if (ext === "gif") {
+				const title = new URL(link).pathname.slice(1);
 				return {
 					type: "gif",
 					id: uuidV5(link, uuidV5.URL),
 					gif_url: link,
 					thumbnail_url: link,
+					title,
 				} as InlineQueryResultGif;
 			}
 		})
