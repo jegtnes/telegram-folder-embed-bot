@@ -3,6 +3,8 @@ import { type Context, type NarrowedContext, Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
 import type { Update } from "telegraf/types";
 
+import { fetchLinks } from "./fetchLinks";
+
 type InlineQueryContext = NarrowedContext<Context, Update.InlineQueryUpdate>;
 
 config();
@@ -26,7 +28,7 @@ bot.on(message("sticker"), (ctx: Context) => {
 });
 
 bot.hears("hi", (ctx: Context) => {
-	console.info('Received "hi"');
+	console.info("Received 'hi'");
 	ctx.reply("Hey there");
 });
 
@@ -36,7 +38,14 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 		ctx.update.inline_query.query,
 	);
 
-	const result = [];
+	const links = await fetchLinks("https://folder.jegtnes.com");
+
+	const result = links.map((link) => {
+		const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
+		const ext = extRx?.[1];
+		console.log("Extension", ext);
+		return "";
+	});
 	return await ctx.answerInlineQuery(result);
 });
 
