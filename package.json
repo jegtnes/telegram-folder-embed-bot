@@ -24,7 +24,8 @@
 		"bun": "^1.1.42",
 		"cheerio": "^1.0.0",
 		"dotenv": "^16.4.7",
-		"telegraf": "^4.16.3"
+		"telegraf": "^4.16.3",
+		"uuid": "^11.0.3"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",

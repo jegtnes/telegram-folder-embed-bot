@@ -1,7 +1,8 @@
 import { config } from "dotenv";
 import { type Context, type NarrowedContext, Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
-import type { Update } from "telegraf/types";
+import type { InlineQueryResult, Update } from "telegraf/types";
+import { v5 as uuidV5 } from "uuid";
 
 import { fetchLinks } from "./fetchLinks";
 
@@ -40,12 +41,26 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 
 	const links = await fetchLinks("https://folder.jegtnes.com");
 
-	const result = links.map((link) => {
-		const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
-		const ext = extRx?.[1];
-		console.log("Extension", ext);
-		return "";
-	});
+	const result: InlineQueryResult[] = links
+		.map((link) => {
+			const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
+			const ext = extRx?.[1];
+			console.log("Extension", ext);
+			if (ext === "jpg") {
+				return {
+					type: "photo",
+					id: uuidV5(link, uuidV5.URL),
+					photo_url: link,
+					thumbnail_url: link,
+				} as InlineQueryResult;
+			}
+		})
+		.filter((item): item is InlineQueryResult => item !== undefined);
+
+	if (!result || result.length === 0) {
+		return [];
+	}
+
 	return await ctx.answerInlineQuery(result);
 });
 
