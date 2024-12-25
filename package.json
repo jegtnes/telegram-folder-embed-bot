@@ -1,43 +1,39 @@
 {
-  "name": "telegram-folder-embed-bot",
-  "version": "0.1.0",
-  "description": "A Telegram bot to embed images from an Apache/Nginx folder listing",
-  "main": "index.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "bun run src/index.ts",
-    "watch": "bun --watch run src/index.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/jegtnes/telegram-folder-embed-bot.git"
-  },
-  "keywords": [
-    "telegram",
-    "telegram-bot",
-    "bot",
-    "chatbot"
-  ],
-  "author": "Alex Jegtnes",
-  "license": "SEE LICENCE IN LICENCE.md",
-  "bugs": {
-    "url": "https://github.com/jegtnes/telegram-folder-embed-bot/issues"
-  },
-  "homepage": "https://github.com/jegtnes/telegram-folder-embed-bot#readme",
-  "dependencies": {
-    "axios": "^1.7.9",
-    "bun": "^1.1.42",
-    "cheerio": "^1.0.0",
-    "dotenv": "^16.4.7",
-    "telegraf": "^4.16.3"
-  },
-  "devDependencies": {
-    "@telegraf/types": "^7.1.0",
-    "@types/bun": "latest",
-    "@types/node": "^22.10.2"
-  },
-  "type": "module",
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  }
+	"name": "telegram-folder-embed-bot",
+	"version": "0.1.0",
+	"description": "A Telegram bot to embed images from an Apache/Nginx folder listing",
+	"main": "index.ts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "bun run src/index.ts",
+		"watch": "bun --watch run src/index.ts"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/jegtnes/telegram-folder-embed-bot.git"
+	},
+	"keywords": ["telegram", "telegram-bot", "bot", "chatbot"],
+	"author": "Alex Jegtnes",
+	"license": "SEE LICENCE IN LICENCE.md",
+	"bugs": {
+		"url": "https://github.com/jegtnes/telegram-folder-embed-bot/issues"
+	},
+	"homepage": "https://github.com/jegtnes/telegram-folder-embed-bot#readme",
+	"dependencies": {
+		"axios": "^1.7.9",
+		"bun": "^1.1.42",
+		"cheerio": "^1.0.0",
+		"dotenv": "^16.4.7",
+		"telegraf": "^4.16.3"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@telegraf/types": "^7.1.0",
+		"@types/bun": "latest",
+		"@types/node": "^22.10.2"
+	},
+	"type": "module",
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	}
 }
