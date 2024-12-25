@@ -27,13 +27,20 @@ bot.hears('hi', (ctx: Context) => {
     ctx.reply('Hey there')
 })
 
+bot.on('inline_query', async (ctx: Context) => {
+    console.info('Received folder inline query command: ', ctx.update.inline_query.query);
+
+    const result = []
+    return await ctx.answerInlineQuery(result)
+});
+
 // Start webhook via launch method (preferred)
 bot.launch({
     webhook: {
         domain: domain,
         port: port,
     },
-});  
+});
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'))
