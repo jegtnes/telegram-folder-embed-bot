@@ -1,6 +1,9 @@
-import { Context, Telegraf } from 'telegraf';
+import { Context, NarrowedContext, Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
 import { config } from 'dotenv';
+import { Update } from "telegraf/types";
+
+type InlineQueryContext = NarrowedContext<Context, Update.InlineQueryUpdate>;
 
 config();
 
@@ -27,7 +30,7 @@ bot.hears('hi', (ctx: Context) => {
     ctx.reply('Hey there')
 })
 
-bot.on('inline_query', async (ctx: Context) => {
+bot.on('inline_query', async (ctx: InlineQueryContext) => {
     console.info('Received folder inline query command: ', ctx.update.inline_query.query);
 
     const result = []
