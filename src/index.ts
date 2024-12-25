@@ -1,7 +1,12 @@
 import { config } from "dotenv";
 import { type Context, type NarrowedContext, Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
-import type { InlineQueryResult, Update } from "telegraf/types";
+import type {
+	InlineQueryResult,
+	InlineQueryResultGif,
+	InlineQueryResultPhoto,
+	Update,
+} from "telegraf/types";
 import { v5 as uuidV5 } from "uuid";
 
 import { fetchLinks } from "./fetchLinks";
@@ -52,14 +57,24 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 					id: uuidV5(link, uuidV5.URL),
 					photo_url: link,
 					thumbnail_url: link,
-				} as InlineQueryResult;
+				} as InlineQueryResultPhoto;
+			}
+			if (ext === "gif") {
+				return {
+					type: "gif",
+					id: uuidV5(link, uuidV5.URL),
+					gif_url: link,
+					thumbnail_url: link,
+				} as InlineQueryResultGif;
 			}
 		})
-		.filter((item): item is InlineQueryResult => item !== undefined);
+		.filter((item): item is InlineQueryResultPhoto => item !== undefined);
 
 	if (!result || result.length === 0) {
 		return [];
 	}
+
+	console.debug({ result });
 
 	return await ctx.answerInlineQuery(result);
 });
