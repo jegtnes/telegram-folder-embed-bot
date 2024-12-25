@@ -8,7 +8,7 @@ const botKey: string = process.env.BOT_TOKEN || "";
 const domain: string = process.env.DOMAIN || "";
 const port: number = parseInt(process.env.PORT || '0', 10);
 
-console.info('Started bot process');
+console.info(`Started bot process at port ${port} at domain ${domain}`);
 
 const bot = new Telegraf(botKey);
 
