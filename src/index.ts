@@ -12,6 +12,7 @@ import { v5 as uuidV5 } from "uuid";
 import { fetchLinks } from "./fetchLinks";
 
 type InlineQueryContext = NarrowedContext<Context, Update.InlineQueryUpdate>;
+type InlineQueryResultsPossible = InlineQueryResultGif | InlineQueryResultPhoto;
 
 config();
 
@@ -50,7 +51,6 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 		.map((link) => {
 			const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
 			const ext = extRx?.[1];
-			console.log("Extension", ext);
 			if (ext === "jpg") {
 				const title = new URL(link).pathname.slice(1);
 				return {
@@ -72,10 +72,17 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 				} as InlineQueryResultGif;
 			}
 		})
-		.filter((item): item is InlineQueryResultPhoto => item !== undefined);
+		.filter((item): item is InlineQueryResultsPossible => item !== undefined)
+		.slice(0, 39);
 
 	if (!result || result.length === 0) {
 		return [];
+	}
+
+	console.log("Total results: ", result.length);
+
+	for (const item of result as InlineQueryResultsPossible[]) {
+		console.log(item.title);
 	}
 
 	console.debug({ result });
