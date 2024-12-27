@@ -13,6 +13,14 @@ import { fetchLinks } from "./fetchLinks";
 
 type InlineQueryContext = NarrowedContext<Context, Update.InlineQueryUpdate>;
 type InlineQueryResultsPossible = InlineQueryResultGif | InlineQueryResultPhoto;
+type PartialQueryResult = {
+	id: string;
+	thumbnail_url: string;
+	title: string;
+	photo_url?: string;
+	gif_url?: string;
+	type?: "gif" | "photo";
+};
 
 config();
 
@@ -40,37 +48,37 @@ bot.hears("hi", (ctx: Context) => {
 });
 
 bot.on("inline_query", async (ctx: InlineQueryContext) => {
-	console.info(
-		"Received folder inline query command: ",
-		ctx.update.inline_query.query,
-	);
+	const query = ctx.update.inline_query.query;
+	console.info("Received folder inline query command: ", query);
 
 	const links = await fetchLinks("https://folder.jegtnes.com");
 
 	const result: InlineQueryResult[] = links
+		.filter((link) => {
+			const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
+			return extRx?.[1] === "jpg" || extRx?.[1] === "gif";
+		})
 		.map((link) => {
 			const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
 			const ext = extRx?.[1];
+			const title = new URL(link).pathname.slice(1);
+			const response: PartialQueryResult = {
+				id: uuidV5(link, uuidV5.URL),
+				thumbnail_url: link,
+				title,
+			};
 			if (ext === "jpg") {
-				const title = new URL(link).pathname.slice(1);
-				return {
-					type: "photo",
-					id: uuidV5(link, uuidV5.URL),
-					photo_url: link,
-					thumbnail_url: link,
-					title,
-				} as InlineQueryResultPhoto;
+				response.type = "photo";
+				response.photo_url = link;
+				return response as InlineQueryResultPhoto;
 			}
 			if (ext === "gif") {
-				const title = new URL(link).pathname.slice(1);
-				return {
-					type: "gif",
-					id: uuidV5(link, uuidV5.URL),
-					gif_url: link,
-					thumbnail_url: link,
-					title,
-				} as InlineQueryResultGif;
+				response.type = "gif";
+				response.gif_url = link;
+				return response as InlineQueryResultGif;
 			}
+
+			return undefined;
 		})
 		.filter((item): item is InlineQueryResultsPossible => item !== undefined)
 		.slice(0, 39);
