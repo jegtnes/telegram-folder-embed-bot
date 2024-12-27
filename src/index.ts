@@ -48,7 +48,7 @@ bot.hears("hi", (ctx: Context) => {
 });
 
 bot.on("inline_query", async (ctx: InlineQueryContext) => {
-	const query = ctx.update.inline_query.query;
+	const query = ctx.update.inline_query.query.trim();
 	console.info("Received folder inline query command: ", query);
 
 	const links = await fetchLinks("https://folder.jegtnes.com");
@@ -58,24 +58,25 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 			const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
 			return extRx?.[1] === "jpg" || extRx?.[1] === "gif";
 		})
+		.filter((link) => (link.length === 0 ? true : link.includes(query)))
 		.map((link) => {
+			const title = new URL(link).pathname.slice(1);
 			const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
 			const ext = extRx?.[1];
-			const title = new URL(link).pathname.slice(1);
-			const response: PartialQueryResult = {
+			const result: PartialQueryResult = {
 				id: uuidV5(link, uuidV5.URL),
 				thumbnail_url: link,
 				title,
 			};
 			if (ext === "jpg") {
-				response.type = "photo";
-				response.photo_url = link;
-				return response as InlineQueryResultPhoto;
+				result.type = "photo";
+				result.photo_url = link;
+				return result as InlineQueryResultPhoto;
 			}
 			if (ext === "gif") {
-				response.type = "gif";
-				response.gif_url = link;
-				return response as InlineQueryResultGif;
+				result.type = "gif";
+				result.gif_url = link;
+				return result as InlineQueryResultGif;
 			}
 
 			return undefined;
