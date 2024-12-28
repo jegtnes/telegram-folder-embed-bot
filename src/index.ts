@@ -37,6 +37,24 @@ bot.help((ctx: Context) => {
 	ctx.reply("Send me a sticker");
 });
 
+bot.command("addfolder", async (ctx: Context) => {
+	console.info("Received addfolder command", ctx.payload);
+	console.debug({ ctx });
+	ctx.reply("Guten tag");
+});
+
+bot.command("showfolders", async (ctx: Context) => {
+	console.info("Received show folders command", ctx.payload);
+	console.debug({ ctx });
+	ctx.reply("Guten tag");
+});
+
+bot.command("removefolder", async (ctx: Context) => {
+	console.info("Remove folders command", ctx.payload);
+	console.debug({ ctx });
+	ctx.reply("Guten tag");
+});
+
 bot.on(message("sticker"), (ctx: Context) => {
 	console.info("Received sticker");
 	ctx.reply("👍");
