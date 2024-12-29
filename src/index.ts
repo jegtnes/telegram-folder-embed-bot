@@ -6,12 +6,15 @@ import type {
 	InlineQueryResultGif,
 	InlineQueryResultPhoto,
 	Update,
+	Convenience,
 } from "telegraf/types";
 import { v5 as uuidV5 } from "uuid";
 
 import { fetchLinks } from "./fetchLinks";
 
+type CommandContext = Context & Convenience.CommandContextExtn;
 type InlineQueryContext = NarrowedContext<Context, Update.InlineQueryUpdate>;
+
 type InlineQueryResultsPossible = InlineQueryResultGif | InlineQueryResultPhoto;
 type PartialQueryResult = {
 	id: string;
@@ -37,19 +40,19 @@ bot.help((ctx: Context) => {
 	ctx.reply("Send me a sticker");
 });
 
-bot.command("addfolder", async (ctx: Context) => {
+bot.command("addfolder", async (ctx: CommandContext) => {
 	console.info("Received addfolder command", ctx.payload);
 	console.debug({ ctx });
 	ctx.reply("Guten tag");
 });
 
-bot.command("showfolders", async (ctx: Context) => {
+bot.command("showfolders", async (ctx: CommandContext) => {
 	console.info("Received show folders command", ctx.payload);
 	console.debug({ ctx });
 	ctx.reply("Guten tag");
 });
 
-bot.command("removefolder", async (ctx: Context) => {
+bot.command("removefolder", async (ctx: CommandContext) => {
 	console.info("Remove folders command", ctx.payload);
 	console.debug({ ctx });
 	ctx.reply("Guten tag");
