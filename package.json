@@ -12,7 +12,14 @@
 		"type": "git",
 		"url": "git+ssh://git@github.com/jegtnes/telegram-folder-embed-bot.git"
 	},
-	"keywords": ["telegram", "telegram-bot", "bot", "chatbot"],
+	"keywords": [
+		"telegram",
+		"telegram-bot",
+		"bot",
+		"meme",
+		"reactions",
+		"reaction-image"
+	],
 	"author": "Alex Jegtnes",
 	"license": "SEE LICENCE IN LICENCE.md",
 	"bugs": {
