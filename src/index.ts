@@ -1,29 +1,22 @@
 import { config } from "dotenv";
-import { type Context, type NarrowedContext, Telegraf } from "telegraf";
+import { type Context, Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
+import { v5 as uuidV5 } from "uuid";
+
+import type {
+	CommandContext,
+	InlineQueryContext,
+	InlineQueryResultsPossible,
+	PartialQueryResult,
+} from "./types";
+
 import type {
 	InlineQueryResult,
 	InlineQueryResultGif,
 	InlineQueryResultPhoto,
-	Update,
-	Convenience,
 } from "telegraf/types";
-import { v5 as uuidV5 } from "uuid";
 
 import { fetchLinks } from "./fetchLinks";
-
-type CommandContext = Context & Convenience.CommandContextExtn;
-type InlineQueryContext = NarrowedContext<Context, Update.InlineQueryUpdate>;
-
-type InlineQueryResultsPossible = InlineQueryResultGif | InlineQueryResultPhoto;
-type PartialQueryResult = {
-	id: string;
-	thumbnail_url: string;
-	title: string;
-	photo_url?: string;
-	gif_url?: string;
-	type?: "gif" | "photo";
-};
 
 config();
 
