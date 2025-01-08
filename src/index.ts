@@ -1,3 +1,4 @@
+import { Database } from "bun:sqlite";
 import { config } from "dotenv";
 import { type Context, Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
@@ -20,9 +21,29 @@ import { fetchLinks } from "./fetchLinks";
 
 config();
 
+const dbFile: string = process.env.SQLITE_DB_FILE || "";
 const botKey: string = process.env.BOT_TOKEN || "";
 const domain: string = process.env.DOMAIN || "";
 const port: number = Number.parseInt(process.env.PORT || "0", 10);
+
+// Ensure database file has been created on bot start
+const db = new Database(dbFile, { create: true });
+
+try {
+	const initTable = db.query(`CREATE TABLE IF NOT EXISTS servers(
+		telegram_id INTEGER,
+		server_url STRING,
+		PRIMARY KEY (telegram_id, server_url)
+	);`);
+	initTable.run();
+	const test = db.query("SELECT * FROM servers");
+	const testR = test.all();
+	console.debug({ testR });
+	db.close(false);
+} catch (error) {
+	console.debug({ error });
+	console.log("Error connecting to / initialising DB");
+}
 
 console.info(`Started bot process at port ${port} at domain ${domain}`);
 
@@ -34,8 +55,10 @@ bot.help((ctx: Context) => {
 });
 
 bot.command("addfolder", async (ctx: CommandContext) => {
+	// const db = new Database(dbFile);
 	console.info("Received addfolder command", ctx.payload);
-	console.debug({ ctx });
+	console.debug(ctx.update);
+	console.debug(ctx);
 	ctx.reply("Guten tag");
 });
 
