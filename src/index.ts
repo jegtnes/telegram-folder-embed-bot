@@ -37,13 +37,11 @@ try {
 		PRIMARY KEY (telegram_id, server_url)
 	);`);
 	initTable.run();
-	const test = db.query("SELECT * FROM servers");
-	const testR = test.all();
-	console.debug({ testR });
-	db.close(false);
 } catch (error) {
 	console.debug({ error });
 	console.log("Error connecting to / initialising DB");
+} finally {
+	db.close(false);
 }
 
 console.info(`Started bot process at port ${port} at domain ${domain}`);
@@ -94,9 +92,16 @@ bot.command("addfolder", async (ctx: CommandContext) => {
 });
 
 bot.command("showfolders", async (ctx: CommandContext) => {
-	console.info("Received show folders command", ctx.payload);
-	console.debug({ ctx });
-	ctx.reply("Guten tag");
+	const userId = ctx.message?.from?.id;
+	const db = new Database(dbFile);
+	const folders = db.query("SELECT * FROM servers WHERE telegram_id = $userId");
+	const result = folders
+		.all({ $userId: `${userId}` })
+		.map((folder) => {
+			return folder.server_url;
+		})
+		.join(", ");
+	ctx.reply(result);
 });
 
 bot.command("removefolder", async (ctx: CommandContext) => {
