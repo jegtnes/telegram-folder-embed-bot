@@ -18,6 +18,7 @@ import type {
 } from "telegraf/types";
 
 import { fetchLinks } from "./fetchLinks";
+import { isFolderValid } from "./isFolderValid";
 
 config();
 
@@ -55,11 +56,41 @@ bot.help((ctx: Context) => {
 });
 
 bot.command("addfolder", async (ctx: CommandContext) => {
-	// const db = new Database(dbFile);
-	console.info("Received addfolder command", ctx.payload);
-	console.debug(ctx.update);
-	console.debug(ctx);
-	ctx.reply("Guten tag");
+	const arg = ctx.payload;
+	const userId = ctx.message?.from?.id;
+	if (!arg.length) {
+		return ctx.reply("Please type the URL of the server you'd like to add");
+	}
+
+	const folderValid = await isFolderValid(arg);
+
+	if (!folderValid) {
+		console.log("hit invalid folder block");
+		return ctx.reply(
+			"Sorry, that URL doesn't seem to be a valid folder listing",
+		);
+	}
+
+	try {
+		const db = new Database(dbFile);
+		const initTable = db.query(
+			"INSERT INTO servers (telegram_id, server_url) VALUES ($userId, $url);",
+		);
+		initTable.run({
+			$userId: `${userId}`,
+			$url: `${arg}`,
+		});
+	} catch (error) {
+		if (error.code === "SQLITE_CONSTRAINT_PRIMARYKEY") {
+			return ctx.reply(
+				"You've already added this folder. See your list of folders with the command /showfolders.",
+			);
+		}
+		console.error({ error });
+		return ctx.reply("Unexpected error: ", error);
+	} finally {
+		db.close(false);
+	}
 });
 
 bot.command("showfolders", async (ctx: CommandContext) => {
