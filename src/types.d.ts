@@ -24,3 +24,8 @@ export type PartialQueryResult = {
 	gif_url?: string;
 	type?: "gif" | "photo";
 };
+
+export type FolderTable = {
+	telegram_id: number;
+	server_url: string;
+};

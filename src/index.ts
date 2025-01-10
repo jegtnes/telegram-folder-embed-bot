@@ -1,4 +1,4 @@
-import { Database } from "bun:sqlite";
+import { Database, Statement } from "bun:sqlite";
 import { config } from "dotenv";
 import { type Context, Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
@@ -9,6 +9,7 @@ import type {
 	InlineQueryContext,
 	InlineQueryResultsPossible,
 	PartialQueryResult,
+	FolderTable,
 } from "./types";
 
 import type {
@@ -63,7 +64,6 @@ bot.command("addfolder", async (ctx: CommandContext) => {
 	const folderValid = await isFolderValid(arg);
 
 	if (!folderValid) {
-		console.log("hit invalid folder block");
 		return ctx.reply(
 			"Sorry, that URL doesn't seem to be a valid folder listing",
 		);
@@ -71,10 +71,10 @@ bot.command("addfolder", async (ctx: CommandContext) => {
 
 	try {
 		const db = new Database(dbFile);
-		const initTable = db.query(
+		const query = db.query(
 			"INSERT INTO servers (telegram_id, server_url) VALUES ($userId, $url);",
 		);
-		initTable.run({
+		query.run({
 			$userId: `${userId}`,
 			$url: `${arg}`,
 		});
@@ -92,16 +92,19 @@ bot.command("addfolder", async (ctx: CommandContext) => {
 });
 
 bot.command("showfolders", async (ctx: CommandContext) => {
-	const userId = ctx.message?.from?.id;
+	const userId: number | undefined = ctx.message?.from?.id;
 	const db = new Database(dbFile);
-	const folders = db.query("SELECT * FROM servers WHERE telegram_id = $userId");
-	const result = folders
-		.all({ $userId: `${userId}` })
-		.map((folder) => {
-			return folder.server_url;
-		})
-		.join(", ");
-	ctx.reply(result);
+	const query: Statement<FolderTable> = db.query(
+		"SELECT * FROM servers WHERE telegram_id = $telegram_id",
+	);
+	const folders: FolderTable[] = query.all({ $telegram_id: `${userId}` });
+	ctx.reply(
+		folders
+			.map((folder) => {
+				return folder.server_url;
+			})
+			.join(", "),
+	);
 });
 
 bot.command("removefolder", async (ctx: CommandContext) => {
@@ -172,7 +175,6 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 	return await ctx.answerInlineQuery(result);
 });
 
-// Start webhook via launch method (preferred)
 bot.launch({
 	webhook: {
 		domain: domain,
