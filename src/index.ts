@@ -20,6 +20,7 @@ import type {
 import { fetchLinks } from "./fetchLinks";
 import { isFolderValid } from "./isFolderValid";
 import { getAllFolders } from "./getAllFolders";
+import { addProtocolToLink, removeProtocolFromLink } from "./urlUtils";
 
 config();
 
@@ -62,6 +63,7 @@ bot.command("addfolder", async (ctx: CommandContext) => {
 	}
 
 	const folderValid = await isFolderValid(arg);
+	const url = addProtocolToLink(arg);
 
 	if (!folderValid) {
 		return ctx.reply(
@@ -76,7 +78,7 @@ bot.command("addfolder", async (ctx: CommandContext) => {
 		);
 		query.run({
 			$telegram_id: `${userId}`,
-			$server_url: `${arg}`,
+			$server_url: `${url}`,
 		});
 		return ctx.reply(
 			"You've successfully added this folder. You can now use gifs and images from it with the inline query `@folderembedbot`.",
@@ -108,7 +110,7 @@ bot.command("showfolders", (ctx: CommandContext) => {
 	return ctx.reply(
 		folders
 			.map((folder) => {
-				return folder.server_url;
+				return removeProtocolFromLink(folder.server_url);
 			})
 			.join(", "),
 	);
@@ -121,6 +123,8 @@ bot.command("removefolder", async (ctx: CommandContext) => {
 		return ctx.reply("Please type the URL of the server you'd like to remove");
 	}
 
+	const url = addProtocolToLink(arg);
+
 	try {
 		const db = new Database(dbFile);
 		const query = db.query(
@@ -128,7 +132,7 @@ bot.command("removefolder", async (ctx: CommandContext) => {
 		);
 		query.run({
 			$telegram_id: `${userId}`,
-			$server_url: `${arg}`,
+			$server_url: `${url}`,
 		});
 		return ctx.reply("You've successfully removed this folder.");
 	} catch (error) {
