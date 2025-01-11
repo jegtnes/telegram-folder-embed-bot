@@ -1,12 +1,15 @@
 import axios from "axios";
+import { setupCache } from "axios-cache-interceptor";
 import * as cheerio from "cheerio";
+
+const axiosInstance = setupCache(axios);
 
 export async function fetchLinks(
 	url: string,
 	query?: string,
 ): Promise<string[]> {
 	try {
-		const response = await axios.get(url);
+		const response = await axiosInstance.get(url);
 		const $ = cheerio.load(response.data);
 
 		const links: string[] = $(
@@ -20,7 +23,6 @@ export async function fetchLinks(
 			})
 			.get();
 
-		console.log(links);
 		return links;
 	} catch (error: unknown) {
 		if (error instanceof Error) {

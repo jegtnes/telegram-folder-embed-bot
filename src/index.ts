@@ -187,7 +187,10 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 		return [];
 	}
 
-	return await ctx.answerInlineQuery(result);
+	return await ctx.answerInlineQuery(result, {
+		is_personal: true,
+		cache_time: 60,
+	});
 });
 
 bot.launch({
