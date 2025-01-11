@@ -153,17 +153,14 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 
 	const folders = getAllFolders(userId);
 
-	const promises = folders.map((folder) => fetchLinks(folder.server_url));
+	const promises = folders.map((folder) =>
+		fetchLinks(folder.server_url, query),
+	);
 	const allLinks = (await Promise.all(promises)).flat();
 
 	console.log({ allLinks });
 
 	const result: InlineQueryResult[] = allLinks
-		.filter((link) => {
-			const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
-			return extRx?.[1] === "jpg" || extRx?.[1] === "gif";
-		})
-		.filter((link) => (link.length === 0 ? true : link.includes(query)))
 		.map((link) => {
 			const title = new URL(link).pathname.slice(1);
 			const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
