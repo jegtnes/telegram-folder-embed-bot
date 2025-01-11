@@ -78,6 +78,9 @@ bot.command("addfolder", async (ctx: CommandContext) => {
 			$userId: `${userId}`,
 			$url: `${arg}`,
 		});
+		return ctx.reply(
+			"You've successfully added this folder. You can now use gifs and images from it with the inline query `@folderembedbot`.",
+		);
 	} catch (error) {
 		if (error.code === "SQLITE_CONSTRAINT_PRIMARYKEY") {
 			return ctx.reply(
@@ -98,7 +101,13 @@ bot.command("showfolders", async (ctx: CommandContext) => {
 		"SELECT * FROM servers WHERE telegram_id = $telegram_id",
 	);
 	const folders: FolderTable[] = query.all({ $telegram_id: `${userId}` });
-	ctx.reply(
+	if (folders.length === 0) {
+		return ctx.reply(
+			"You haven't added any folders yet. Add folders using the `/addfolder [folder]` command.",
+		);
+	}
+
+	return ctx.reply(
 		folders
 			.map((folder) => {
 				return folder.server_url;
