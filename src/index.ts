@@ -20,6 +20,7 @@ import type {
 
 import { fetchLinks } from "./fetchLinks";
 import { isFolderValid } from "./isFolderValid";
+import { getAllFolders } from "./getAllFolders";
 
 config();
 
@@ -96,11 +97,9 @@ bot.command("addfolder", async (ctx: CommandContext) => {
 
 bot.command("showfolders", async (ctx: CommandContext) => {
 	const userId: number | undefined = ctx.message?.from?.id;
-	const db = new Database(dbFile);
-	const query: Statement<FolderTable> = db.query(
-		"SELECT * FROM servers WHERE telegram_id = $telegram_id",
-	);
-	const folders: FolderTable[] = query.all({ $telegram_id: `${userId}` });
+	if (!userId) return ctx.reply("Unexpected error occurred");
+
+	const folders = await getAllFolders(userId);
 	if (folders.length === 0) {
 		return ctx.reply(
 			"You haven't added any folders yet. Add folders using the `/addfolder [folder]` command.",
