@@ -181,13 +181,11 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 			return undefined;
 		})
 		.filter((item): item is InlineQueryResultsPossible => item !== undefined)
-		.slice(0, 39);
+		.slice(0, 40);
 
 	if (!result || result.length === 0) {
 		return [];
 	}
-
-	console.log("Total results: ", result.length);
 
 	for (const item of result as InlineQueryResultsPossible[]) {
 		console.log(item.title);
