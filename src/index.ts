@@ -94,11 +94,11 @@ bot.command("addfolder", async (ctx: CommandContext) => {
 	}
 });
 
-bot.command("showfolders", async (ctx: CommandContext) => {
+bot.command("showfolders", (ctx: CommandContext) => {
 	const userId: number | undefined = ctx.message?.from?.id;
 	if (!userId) return ctx.reply("Unexpected error occurred");
 
-	const folders = await getAllFolders(userId);
+	const folders = getAllFolders(userId);
 	if (folders.length === 0) {
 		return ctx.reply(
 			"You haven't added any folders yet. Add folders using the `/addfolder [folder]` command.",
