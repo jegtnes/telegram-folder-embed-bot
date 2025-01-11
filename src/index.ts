@@ -147,12 +147,18 @@ bot.command("removefolder", async (ctx: CommandContext) => {
 });
 
 bot.on("inline_query", async (ctx: InlineQueryContext) => {
+	const userId = ctx.update?.inline_query?.from?.id;
 	const query = ctx.update.inline_query.query.trim();
 	console.info("Received folder inline query command: ", query);
 
-	const links = await fetchLinks("https://folder.jegtnes.com");
+	const folders = getAllFolders(userId);
 
-	const result: InlineQueryResult[] = links
+	const promises = folders.map((folder) => fetchLinks(folder.server_url));
+	const allLinks = (await Promise.all(promises)).flat();
+
+	console.log({ allLinks });
+
+	const result: InlineQueryResult[] = allLinks
 		.filter((link) => {
 			const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
 			return extRx?.[1] === "jpg" || extRx?.[1] === "gif";
@@ -188,7 +194,7 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 	}
 
 	for (const item of result as InlineQueryResultsPossible[]) {
-		console.log(item.title);
+		// console.log(item.title);
 	}
 
 	console.debug({ result });
