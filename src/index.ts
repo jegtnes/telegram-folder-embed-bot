@@ -1,7 +1,6 @@
 import { Database, type Statement } from "bun:sqlite";
 import { config } from "dotenv";
 import { type Context, Telegraf } from "telegraf";
-import { message } from "telegraf/filters";
 import { v5 as uuidV5 } from "uuid";
 
 import type {
@@ -50,9 +49,9 @@ console.info(`Started bot process at port ${port} at domain ${domain}`);
 
 const bot = new Telegraf(botKey);
 
-bot.start((ctx: Context) => ctx.reply("Welcome"));
+bot.start((ctx: Context) => ctx.reply("TODO"));
 bot.help((ctx: Context) => {
-	ctx.reply("Send me a sticker");
+	ctx.reply("TODO");
 });
 
 bot.command("addfolder", async (ctx: CommandContext) => {
@@ -138,11 +137,6 @@ bot.command("removefolder", async (ctx: CommandContext) => {
 	} finally {
 		db.close(false);
 	}
-});
-
-bot.on(message("sticker"), (ctx: Context) => {
-	console.info("Received sticker");
-	ctx.reply("👍");
 });
 
 bot.on("inline_query", async (ctx: InlineQueryContext) => {

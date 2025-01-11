@@ -20,6 +20,3 @@ export async function isFolderValid(url: string): Promise<boolean> {
 		return false;
 	}
 }
-
-const asd = await isFolderValid("google.com");
-console.log(asd);
