@@ -72,11 +72,11 @@ bot.command("addfolder", async (ctx: CommandContext) => {
 	try {
 		const db = new Database(dbFile);
 		const query = db.query(
-			"INSERT INTO servers (telegram_id, server_url) VALUES ($userId, $url);",
+			"INSERT INTO servers (telegram_id, server_url) VALUES ($telegram_id, $server_url);",
 		);
 		query.run({
-			$userId: `${userId}`,
-			$url: `${arg}`,
+			$telegram_id: `${userId}`,
+			$server_url: `${arg}`,
 		});
 		return ctx.reply(
 			"You've successfully added this folder. You can now use gifs and images from it with the inline query `@folderembedbot`.",
@@ -117,19 +117,33 @@ bot.command("showfolders", async (ctx: CommandContext) => {
 });
 
 bot.command("removefolder", async (ctx: CommandContext) => {
-	console.info("Remove folders command", ctx.payload);
-	console.debug({ ctx });
-	ctx.reply("Guten tag");
+	const arg = ctx.payload;
+	const userId = ctx.message?.from?.id;
+	if (!arg.length) {
+		return ctx.reply("Please type the URL of the server you'd like to remove");
+	}
+
+	try {
+		const db = new Database(dbFile);
+		const query = db.query(
+			"DELETE FROM servers WHERE (telegram_id = $telegram_id) AND (server_url = $server_url);",
+		);
+		query.run({
+			$telegram_id: `${userId}`,
+			$server_url: `${arg}`,
+		});
+		return ctx.reply("You've successfully removed this folder.");
+	} catch (error) {
+		console.error({ error });
+		return ctx.reply("Unexpected error. Soz");
+	} finally {
+		db.close(false);
+	}
 });
 
 bot.on(message("sticker"), (ctx: Context) => {
 	console.info("Received sticker");
 	ctx.reply("👍");
-});
-
-bot.hears("hi", (ctx: Context) => {
-	console.info("Received 'hi'");
-	ctx.reply("Hey there");
 });
 
 bot.on("inline_query", async (ctx: InlineQueryContext) => {
