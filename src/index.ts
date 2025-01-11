@@ -1,4 +1,4 @@
-import { Database, Statement } from "bun:sqlite";
+import { Database, type Statement } from "bun:sqlite";
 import { config } from "dotenv";
 import { type Context, Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
