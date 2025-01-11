@@ -12,14 +12,13 @@ export async function fetchLinks(
 		const links: string[] = $(
 			`a[href$='.jpg']:icontains('${query}'), a[href$='.gif']:icontains('${query}')`,
 		)
+			.slice(0, 40)
 			.map((i, element) => {
-				if (!element) return;
 				const href = $(element).attr("href") || "";
 				const fullLink = new URL(href, url);
 				return fullLink.href;
 			})
-			.get()
-			.slice(0, 40);
+			.get();
 
 		console.log(links);
 		return links;

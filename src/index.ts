@@ -156,9 +156,7 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 	const promises = folders.map((folder) =>
 		fetchLinks(folder.server_url, query),
 	);
-	const allLinks = (await Promise.all(promises)).flat();
-
-	console.log({ allLinks });
+	const allLinks = (await Promise.all(promises)).flat().slice(0, 40);
 
 	const result: InlineQueryResult[] = allLinks
 		.map((link) => {
@@ -183,18 +181,11 @@ bot.on("inline_query", async (ctx: InlineQueryContext) => {
 
 			return undefined;
 		})
-		.filter((item): item is InlineQueryResultsPossible => item !== undefined)
-		.slice(0, 40);
+		.filter((item): item is InlineQueryResultsPossible => item !== undefined);
 
 	if (!result || result.length === 0) {
 		return [];
 	}
-
-	for (const item of result as InlineQueryResultsPossible[]) {
-		// console.log(item.title);
-	}
-
-	console.debug({ result });
 
 	return await ctx.answerInlineQuery(result);
 });
