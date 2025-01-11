@@ -9,7 +9,9 @@ export async function fetchLinks(
 		const response = await axios.get(url);
 		const $ = cheerio.load(response.data);
 
-		const links: string[] = $(`a[href]:icontains('${query}')`)
+		const links: string[] = $(
+			`a[href$='.jpg']:icontains('${query}'), a[href$='.gif']:icontains('${query}')`,
+		)
 			.map((i, element) => {
 				if (!element) return;
 				const href = $(element).attr("href") || "";
@@ -17,11 +19,9 @@ export async function fetchLinks(
 				return fullLink.href;
 			})
 			.get()
-			.filter((link) => {
-				const extRx = link.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
-				return extRx?.[1] === "jpg" || extRx?.[1] === "gif";
-			})
 			.slice(0, 40);
+
+		console.log(links);
 		return links;
 	} catch (error: unknown) {
 		if (error instanceof Error) {
