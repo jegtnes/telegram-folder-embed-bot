@@ -130,10 +130,13 @@ bot.command("removefolder", async (ctx: CommandContext) => {
 		const query = db.query(
 			"DELETE FROM servers WHERE (telegram_id = $telegram_id) AND (server_url = $server_url);",
 		);
-		query.run({
+		const result = query.run({
 			$telegram_id: `${userId}`,
 			$server_url: `${url}`,
 		});
+		if (result.changes === 0) {
+			throw new Error("Could not delete the database row");
+		}
 		return ctx.reply("You've successfully removed this folder.");
 	} catch (error) {
 		console.error({ error });
