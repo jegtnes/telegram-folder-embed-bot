@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,14 +18,18 @@ jobs:
       - name: Run tests
         run: bun run test
 
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Build Bun target
+        run: bun run build
       - name: Transfer application to server
         uses: appleboy/scp-action@master
         with:
-          source: "*"
+          source: "build/index.js"
           target: "${{secrets.DEPLOY_FOLDER}}"
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
