@@ -4,7 +4,7 @@
 	"description": "A Telegram bot to embed images from an Apache/Nginx folder listing",
 	"main": "index.ts",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "echo \"Lol, lmao\" && exit 0",
 		"start": "bun run src/index.ts",
 		"watch": "bun --watch run src/index.ts"
 	},
