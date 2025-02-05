@@ -22,6 +22,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v1
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
       - name: Build Bun target
