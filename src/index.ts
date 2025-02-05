@@ -29,6 +29,11 @@ const botKey: string = process.env.BOT_TOKEN || "";
 const domain: string = process.env.DOMAIN || "";
 const port: number = Number.parseInt(process.env.PORT || "0", 10);
 
+console.log("db file", process.env.SQLITE_DB_FILE);
+console.log("bot token", process.env.BOT_TOKEN);
+console.log("domain", process.env.DOMAIN);
+console.log("port", process.env.PORT);
+
 // Ensure database file has been created on bot start
 const db = new Database(dbFile, { create: true });
 
