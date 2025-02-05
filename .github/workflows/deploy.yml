@@ -2,7 +2,7 @@ name: Deploy and run Telegram folder embed bot
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   build-and-test:
