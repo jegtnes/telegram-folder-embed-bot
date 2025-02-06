@@ -21,6 +21,8 @@ export const botName: string = process.env.BOT_NAME || "FolderEmbed";
 export const botUsername: string = process.env.BOT_USERNAME || "FolderEmbedBot";
 export const dbFilePath: string = pathResolve(pathJoin(dbPath, dbFileName));
 
+console.log(dbFilePath);
+
 // Ensure database file has been created on bot start
 const db = new Database(dbFilePath, { create: true });
 
