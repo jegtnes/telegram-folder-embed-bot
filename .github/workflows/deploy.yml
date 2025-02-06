@@ -55,6 +55,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd ${{SECRETS.DEPLOY_FOLDER}}
-            cp ../persistent/db.sqlite ./
-            ${{ vars.PM2_PATH }} restart
+            bun --bun ${{ vars.PM2_PATH }} restart all
+            echo ${{ github.repository }}
