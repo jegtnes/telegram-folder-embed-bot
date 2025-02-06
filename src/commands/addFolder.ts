@@ -2,10 +2,7 @@ import Database from "bun:sqlite";
 import { isFolderValid } from "../folderParsing/isFolderValid";
 import type { CommandContext } from "../types/types";
 import { addProtocolToLink } from "../utils/url";
-import { dbFilePath } from "../index";
-
-import { config } from "dotenv";
-const botUsername: string = process.env.BOT_USERNAME || "";
+import { dbFilePath, botUsername } from "../index";
 
 export async function addFolder(ctx: CommandContext) {
 	const folderName = ctx.payload;
