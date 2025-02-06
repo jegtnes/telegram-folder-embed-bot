@@ -55,5 +55,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            bun --bun ${{ vars.PM2_PATH }} restart all
-            echo ${{ github.repository }}
+            ${{ vars.BUN_PATH }} --bun ${{ vars.PM2_PATH }} restart ${{ vars.APP_NAME }}
