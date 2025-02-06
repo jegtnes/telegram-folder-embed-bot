@@ -38,7 +38,7 @@ try {
 	db.close(false);
 }
 
-console.info(`Started bot process at port ${port} at domain ${domain}`);
+console.info(`Started bot process at port ${port} at domain ${domain}.`);
 
 const bot = new Telegraf(botKey);
 
