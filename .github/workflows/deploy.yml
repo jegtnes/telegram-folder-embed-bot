@@ -27,7 +27,7 @@ jobs:
       - name: Transfer application to server
         uses: burnett01/rsync-deployments@7.0.2
         with:
-          switches: -avzr --delete --exclude "node_modules, .env, .db.sqlite"
+          switches: -avzr --delete --exclude "node_modules, .env, .db.sqlite, .git"
           path: "./"
           remote_path: "${{secrets.DEPLOY_FOLDER}}"
           remote_host: ${{ secrets.HOST }}
@@ -42,5 +42,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            whoami
+            pwd
             cd ${{SECRETS.DEPLOY_FOLDER}}
+            pwd
+            which bun
             bun install --production
