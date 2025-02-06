@@ -49,4 +49,4 @@ jobs:
             pwd
             ls -al
             source /etc/profile
-            $(${{ vars.BUN_PATH }}) -v
+            $(${{ vars.BUN_PATH }} -v)
