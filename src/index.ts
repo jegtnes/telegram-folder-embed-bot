@@ -1,5 +1,5 @@
 import { Database, type Statement } from "bun:sqlite";
-import { join as pathJoin } from "node:path";
+import { join as pathJoin, resolve as pathResolve } from "node:path";
 import { config } from "dotenv";
 import { type Context, Telegraf } from "telegraf";
 import { v5 as uuidV5 } from "uuid";
@@ -26,10 +26,14 @@ import { addProtocolToLink, removeProtocolFromLink } from "./urlUtils";
 config();
 
 const dbFile: string =
-	pathJoin(
-		process.env.SQLITE_DB_PATH || "",
-		process.env.SQLITE_DB_FILE || "",
+	pathResolve(
+		pathJoin(
+			process.env.SQLITE_DB_PATH || "",
+			process.env.SQLITE_DB_FILE || "",
+		),
 	) || "";
+
+console.log({ dbFile });
 const botKey: string = process.env.BOT_TOKEN || "";
 const domain: string = process.env.DOMAIN || "";
 const port: number = Number.parseInt(process.env.PORT || "0", 10);
