@@ -23,6 +23,7 @@ import { isFolderValid } from "./isFolderValid";
 import { getAllFolders } from "./getAllFolders";
 import { addProtocolToLink, removeProtocolFromLink } from "./urlUtils";
 import { addFolder } from "./commands/addFolder";
+import { showFolders } from "./commands/showFolders";
 
 config();
 
@@ -66,25 +67,7 @@ bot.help((ctx: Context) => {
 
 bot.command("addfolder", async (ctx: CommandContext) => addFolder(ctx));
 
-bot.command("showfolders", (ctx: CommandContext) => {
-	const userId: number | undefined = ctx.message?.from?.id;
-	if (!userId) return ctx.reply("Unexpected error occurred");
-
-	const folders = getAllFolders(userId);
-	if (folders.length === 0) {
-		return ctx.reply(
-			"You haven't added any folders yet. Add folders using the `/addfolder [folder]` command.",
-		);
-	}
-
-	return ctx.reply(
-		folders
-			.map((folder) => {
-				return removeProtocolFromLink(folder.server_url);
-			})
-			.join(", "),
-	);
-});
+bot.command("showfolders", (ctx: CommandContext) => showFolders(ctx));
 
 bot.command("removefolder", async (ctx: CommandContext) => {
 	const arg = ctx.payload;
