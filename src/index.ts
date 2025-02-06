@@ -33,7 +33,7 @@ try {
 	initTable.run();
 } catch (error) {
 	console.debug({ error });
-	console.log("Error connecting to / initialising DB");
+	console.log("Error connecting to / initialising DB.");
 } finally {
 	db.close(false);
 }
