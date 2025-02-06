@@ -8,7 +8,7 @@ export async function addFolder(ctx: CommandContext) {
 	const folderName = ctx.payload;
 	const userId = ctx.message?.from?.id;
 	if (!folderName.length) {
-		return ctx.reply("Please type the URL of the server you'd like to add");
+		return ctx.reply("Please type the URL of the server you'd like to add.");
 	}
 
 	const folderValid = await isFolderValid(folderName);
