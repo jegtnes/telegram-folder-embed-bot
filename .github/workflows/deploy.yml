@@ -42,11 +42,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            whoami
-            pwd
-            ls -al
             cd ${{SECRETS.DEPLOY_FOLDER}}
-            pwd
-            ls -al
-            source /etc/profile
-            ${{ vars.BUN_PATH }} -v
+            ${{ vars.BUN_PATH }} install --production
