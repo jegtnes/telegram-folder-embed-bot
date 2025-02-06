@@ -4,11 +4,10 @@ on:
   push:
     branches: [main]
 
-env: prod
-
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: prod
 
     steps:
       - name: Checkout repo
