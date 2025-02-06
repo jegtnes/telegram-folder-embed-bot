@@ -24,7 +24,6 @@ export const dbFilePath: string = pathResolve(pathJoin(dbPath, dbFileName));
 console.log(dbPath);
 console.log(dbFileName);
 console.log(dbFilePath);
-console.log(process.env);
 
 // Ensure database file has been created on bot start
 const db = new Database(dbFilePath, { create: true });
