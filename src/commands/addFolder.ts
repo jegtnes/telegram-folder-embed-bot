@@ -30,7 +30,7 @@ export async function addFolder(ctx: CommandContext) {
 			$server_url: `${url}`,
 		});
 		return ctx.reply(
-			`You've successfully added this folder. You can now use gifs and images from it with the inline query @${botUsername}`,
+			`You've successfully added this folder. You can now use gifs and images from it with the inline query @${botUsername}.`,
 		);
 	} catch (error) {
 		if (error.code === "SQLITE_CONSTRAINT_PRIMARYKEY") {
