@@ -43,4 +43,5 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{SECRETS.DEPLOY_FOLDER}}
+            cp ../persistent/db.sqlite ./
             ${{ vars.BUN_PATH }} install --production
