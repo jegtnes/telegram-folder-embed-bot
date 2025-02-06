@@ -66,38 +66,8 @@ bot.help((ctx: Context) => {
 });
 
 bot.command("addfolder", async (ctx: CommandContext) => addFolder(ctx));
-
 bot.command("showfolders", (ctx: CommandContext) => showFolders(ctx));
-
-bot.command("removefolder", async (ctx: CommandContext) => {
-	const arg = ctx.payload;
-	const userId = ctx.message?.from?.id;
-	if (!arg.length) {
-		return ctx.reply("Please type the URL of the server you'd like to remove");
-	}
-
-	const url = addProtocolToLink(arg);
-
-	try {
-		const db = new Database(dbFile);
-		const query = db.query(
-			"DELETE FROM servers WHERE (telegram_id = $telegram_id) AND (server_url = $server_url);",
-		);
-		const result = query.run({
-			$telegram_id: `${userId}`,
-			$server_url: `${url}`,
-		});
-		if (result.changes === 0) {
-			throw new Error("Could not delete the database row");
-		}
-		return ctx.reply("You've successfully removed this folder.");
-	} catch (error) {
-		console.error({ error });
-		return ctx.reply("Unexpected error. Soz");
-	} finally {
-		db.close(false);
-	}
-});
+bot.command("removefolder", async (ctx: CommandContext) => removeFolder(ctx));
 
 bot.on("inline_query", async (ctx: InlineQueryContext) => {
 	const userId = ctx.update?.inline_query?.from?.id;
