@@ -16,7 +16,8 @@ export async function fetchLinks(
 			`a[href$='.jpg']:icontains('${query}'), a[href$='.gif']:icontains('${query}')`,
 		)
 			.slice(0, 40)
-			.map((i, element) => {
+			.map((_, element) => {
+				// ensure we form an absolute URL to return:
 				const href = $(element).attr("href") || "";
 				const fullLink = new URL(href, url);
 				return fullLink.href;
@@ -24,12 +25,9 @@ export async function fetchLinks(
 			.get();
 
 		return links;
-	} catch (error: unknown) {
-		if (error instanceof Error) {
-			console.error(`fucked it m8: ${error?.message}`);
-		} else {
-			console.error("fucked it so hard this isn't even an error");
-		}
-		return [];
+	} catch (error) {
+		console.error("Error fetching links:");
+		console.error({ error });
 	}
+	return [];
 }

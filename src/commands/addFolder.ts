@@ -2,7 +2,7 @@ import Database from "bun:sqlite";
 import { isFolderValid } from "../isFolderValid";
 import type { CommandContext } from "../types";
 import { addProtocolToLink } from "../urlUtils";
-import { dbFile } from "../index";
+import { dbFilePath } from "../index";
 
 export async function addFolder(ctx: CommandContext) {
 	const folderName = ctx.payload;
@@ -19,7 +19,7 @@ export async function addFolder(ctx: CommandContext) {
 		);
 	}
 
-	const db = new Database(dbFile);
+	const db = new Database(dbFilePath);
 	const url = addProtocolToLink(folderName);
 	try {
 		const query = db.query(

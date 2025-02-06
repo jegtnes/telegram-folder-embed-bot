@@ -2,45 +2,25 @@ import { Database, type Statement } from "bun:sqlite";
 import { join as pathJoin, resolve as pathResolve } from "node:path";
 import { config } from "dotenv";
 import { type Context, Telegraf } from "telegraf";
-import { v5 as uuidV5 } from "uuid";
 
-import type {
-	CommandContext,
-	InlineQueryContext,
-	InlineQueryResultsPossible,
-	PartialQueryResult,
-	FolderTable,
-} from "./types";
+import type { CommandContext, InlineQueryContext } from "./types";
 
-import type {
-	InlineQueryResult,
-	InlineQueryResultGif,
-	InlineQueryResultPhoto,
-} from "telegraf/types";
-
-import { fetchLinks } from "./fetchLinks";
-import { isFolderValid } from "./isFolderValid";
-import { getAllFolders } from "./getAllFolders";
-import { addProtocolToLink, removeProtocolFromLink } from "./urlUtils";
 import { addFolder } from "./commands/addFolder";
 import { showFolders } from "./commands/showFolders";
+import { removeFolder } from "./commands/removeFolder";
+import { inlineQueryResponse as inlineQuery } from "./commands/inlineQueryResponse";
 
 config();
-
-export const dbFile: string =
-	pathResolve(
-		pathJoin(
-			process.env.SQLITE_DB_PATH || "",
-			process.env.SQLITE_DB_FILE || "",
-		),
-	) || "";
 
 const botKey: string = process.env.BOT_TOKEN || "";
 const domain: string = process.env.DOMAIN || "";
 const port: number = Number.parseInt(process.env.PORT || "0", 10);
+const dbPath: string = process.env.SQLITE_DB_PATH || "";
+const dbFileName: string = process.env.SQLITE_DB_FILE || "";
+export const dbFilePath: string = pathResolve(pathJoin(dbPath, dbFileName));
 
 // Ensure database file has been created on bot start
-const db = new Database(dbFile, { create: true });
+const db = new Database(dbFilePath, { create: true });
 
 try {
 	const initTable = db.query(`CREATE TABLE IF NOT EXISTS servers(
