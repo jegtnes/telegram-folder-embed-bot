@@ -18,7 +18,7 @@ const port: number = Number.parseInt(process.env.PORT || "0", 10);
 const dbPath: string = process.env.SQLITE_DB_PATH || "";
 const dbFileName: string = process.env.SQLITE_DB_FILE || "";
 export const botName: string = process.env.BOT_NAME || "FolderEmbed";
-export const botUsername: string = process.env.BOT_USERNAME || "";
+export const botUsername: string = process.env.BOT_USERNAME || "FolderEmbedBot";
 export const dbFilePath: string = pathResolve(pathJoin(dbPath, dbFileName));
 
 // Ensure database file has been created on bot start
