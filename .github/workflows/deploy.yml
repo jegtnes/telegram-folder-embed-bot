@@ -46,4 +46,4 @@ jobs:
             pwd
             cd ${{SECRETS.DEPLOY_FOLDER}}
             pwd
-            $(which bun) install --production
+            which bun
