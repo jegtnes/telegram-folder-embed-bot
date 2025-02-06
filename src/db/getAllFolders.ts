@@ -1,7 +1,7 @@
 import { Database, type Statement } from "bun:sqlite";
-import type { FolderTable } from "./types";
+import type { FolderTable } from "../types/types";
 
-import { dbFilePath } from "./index";
+import { dbFilePath } from "../index";
 
 export function getAllFolders(userId: number): FolderTable[] {
 	const db = new Database(dbFilePath);

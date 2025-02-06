@@ -1,6 +1,6 @@
-import { getAllFolders } from "../getAllFolders";
-import type { CommandContext } from "../types";
-import { removeProtocolFromLink } from "../urlUtils";
+import { getAllFolders } from "../db/getAllFolders";
+import type { CommandContext } from "../types/types";
+import { removeProtocolFromLink } from "../utils/url";
 
 export function showFolders(ctx: CommandContext) {
 	const userId: number | undefined = ctx.message?.from?.id;

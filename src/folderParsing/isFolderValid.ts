@@ -1,6 +1,6 @@
 import axios, { type AxiosResponse } from "axios";
 import * as cheerio from "cheerio";
-import { addProtocolToLink } from "./urlUtils";
+import { addProtocolToLink } from "../utils/url";
 
 export async function isFolderValid(url: string): Promise<boolean> {
 	try {

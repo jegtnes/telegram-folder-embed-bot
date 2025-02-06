@@ -1,9 +1,9 @@
-import { Database, type Statement } from "bun:sqlite";
+import { Database } from "bun:sqlite";
 import { join as pathJoin, resolve as pathResolve } from "node:path";
 import { config } from "dotenv";
 import { type Context, Telegraf } from "telegraf";
 
-import type { CommandContext, InlineQueryContext } from "./types";
+import type { CommandContext, InlineQueryContext } from "./types/types";
 
 import { addFolder } from "./commands/addFolder";
 import { showFolders } from "./commands/showFolders";

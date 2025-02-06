@@ -1,7 +1,7 @@
 import Database from "bun:sqlite";
 import { dbFilePath } from "../index";
-import type { CommandContext } from "../types";
-import { addProtocolToLink } from "../urlUtils";
+import type { CommandContext } from "../types/types";
+import { addProtocolToLink } from "../utils/url";
 
 export function removeFolder(ctx: CommandContext) {
 	const arg = ctx.payload;

@@ -1,7 +1,7 @@
 import { v5 as uuidV5 } from "uuid";
 
-import { fetchLinks } from "../fetchLinks";
-import { getAllFolders } from "../getAllFolders";
+import { fetchLinks } from "../folderParsing/fetchLinks";
+import { getAllFolders } from "../db/getAllFolders";
 import type {
 	InlineQueryResult,
 	InlineQueryResultPhoto,
@@ -11,7 +11,7 @@ import type {
 	InlineQueryContext,
 	PartialQueryResult,
 	InlineQueryResultsPossible,
-} from "../types";
+} from "../types/types";
 
 export async function inlineQueryResponse(ctx: InlineQueryContext) {
 	const userId = ctx.update?.inline_query?.from?.id;
