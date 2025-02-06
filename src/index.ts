@@ -22,10 +22,11 @@ import { fetchLinks } from "./fetchLinks";
 import { isFolderValid } from "./isFolderValid";
 import { getAllFolders } from "./getAllFolders";
 import { addProtocolToLink, removeProtocolFromLink } from "./urlUtils";
+import { addFolder } from "./commands/addFolder";
 
 config();
 
-const dbFile: string =
+export const dbFile: string =
 	pathResolve(
 		pathJoin(
 			process.env.SQLITE_DB_PATH || "",
@@ -33,7 +34,6 @@ const dbFile: string =
 		),
 	) || "";
 
-console.log({ dbFile });
 const botKey: string = process.env.BOT_TOKEN || "";
 const domain: string = process.env.DOMAIN || "";
 const port: number = Number.parseInt(process.env.PORT || "0", 10);
@@ -64,46 +64,7 @@ bot.help((ctx: Context) => {
 	ctx.reply("TODO");
 });
 
-bot.command("addfolder", async (ctx: CommandContext) => {
-	const arg = ctx.payload;
-	const userId = ctx.message?.from?.id;
-	if (!arg.length) {
-		return ctx.reply("Please type the URL of the server you'd like to add");
-	}
-
-	const folderValid = await isFolderValid(arg);
-	const url = addProtocolToLink(arg);
-
-	if (!folderValid) {
-		return ctx.reply(
-			"Sorry, that URL doesn't seem to be a valid folder listing",
-		);
-	}
-
-	try {
-		const db = new Database(dbFile);
-		const query = db.query(
-			"INSERT INTO servers (telegram_id, server_url) VALUES ($telegram_id, $server_url);",
-		);
-		query.run({
-			$telegram_id: `${userId}`,
-			$server_url: `${url}`,
-		});
-		return ctx.reply(
-			"You've successfully added this folder. You can now use gifs and images from it with the inline query `@folderembedbot`.",
-		);
-	} catch (error) {
-		if (error.code === "SQLITE_CONSTRAINT_PRIMARYKEY") {
-			return ctx.reply(
-				"You've already added this folder. See your list of folders with the command /showfolders.",
-			);
-		}
-		console.error({ error });
-		return ctx.reply("Unexpected error: ", error);
-	} finally {
-		db.close(false);
-	}
-});
+bot.command("addfolder", async (ctx: CommandContext) => addFolder(ctx));
 
 bot.command("showfolders", (ctx: CommandContext) => {
 	const userId: number | undefined = ctx.message?.from?.id;
