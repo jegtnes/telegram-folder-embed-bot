@@ -48,3 +48,5 @@ jobs:
             cd ${{SECRETS.DEPLOY_FOLDER}}
             pwd
             ls -al
+            source /etc/profile
+            bun -v
