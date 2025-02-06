@@ -27,7 +27,7 @@ jobs:
       - name: Transfer application to server
         uses: burnett01/rsync-deployments@7.0.2
         with:
-          switches: -avzr --delete --exclude "node_modules, .env, .db.sqlite, .git"
+          switches: -avzr --delete --exclude "node_modules" --exclude ".git"
           path: "./"
           remote_path: "${{secrets.DEPLOY_FOLDER}}"
           remote_host: ${{ secrets.HOST }}
@@ -44,6 +44,7 @@ jobs:
           script: |
             whoami
             pwd
+            ls -al
             cd ${{SECRETS.DEPLOY_FOLDER}}
             pwd
             ls -al
