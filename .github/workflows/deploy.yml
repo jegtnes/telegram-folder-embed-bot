@@ -45,3 +45,14 @@ jobs:
             cd ${{SECRETS.DEPLOY_FOLDER}}
             cp ../persistent/db.sqlite ./
             ${{ vars.BUN_PATH }} install --production
+      - name: Restart pm2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{SECRETS.DEPLOY_FOLDER}}
+            cp ../persistent/db.sqlite ./
+            ${{ vars.PM2_PATH }} restart

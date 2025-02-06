@@ -4,6 +4,9 @@ import type { CommandContext } from "../types/types";
 import { addProtocolToLink } from "../utils/url";
 import { dbFilePath } from "../index";
 
+import { config } from "dotenv";
+const botUsername: string = process.env.BOT_USERNAME || "";
+
 export async function addFolder(ctx: CommandContext) {
 	const folderName = ctx.payload;
 	const userId = ctx.message?.from?.id;
@@ -30,7 +33,7 @@ export async function addFolder(ctx: CommandContext) {
 			$server_url: `${url}`,
 		});
 		return ctx.reply(
-			"You've successfully added this folder. You can now use gifs and images from it with the inline query `@folderembedbot`.",
+			`You've successfully added this folder. You can now use gifs and images from it with the inline query @${botUsername}`,
 		);
 	} catch (error) {
 		if (error.code === "SQLITE_CONSTRAINT_PRIMARYKEY") {
