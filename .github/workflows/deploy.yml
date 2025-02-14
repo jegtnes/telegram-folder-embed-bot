@@ -55,4 +55,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            ${{ vars.BUN_PATH }} --bun ${{ vars.PM2_PATH }} restart ${{ vars.APP_NAME }} --update-env
+            pm2 restart ${{ vars.APP_NAME }} --update-env
